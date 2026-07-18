@@ -27,6 +27,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -155,9 +159,42 @@ class HomeScreen : Screen {
                     }
                 }
 
+                val context = LocalContext.current
+                val filePickerLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.GetContent()
+                ) { uri: android.net.Uri? ->
+                    if (uri != null) {
+                        val baseVersion = latestVersion!!
+                        val targetCacheDir = (context.externalCacheDir ?: context.cacheDir)
+                            .resolve(baseVersion.toVersionCode())
+                        val destFile = targetCacheDir.resolve("base-${baseVersion.toVersionCode()}.apk")
+                        destFile.parentFile?.mkdirs()
+                        try {
+                            context.contentResolver.openInputStream(uri)?.use { input ->
+                                destFile.outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
+                            Toast.makeText(context, "Successfully loaded base APK!", Toast.LENGTH_SHORT).show()
+                            navigator.navigate(InstallerScreen(baseVersion))
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Failed to load base APK: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
                 Button(
                     onClick = {
-                        navigator.navigate(InstallerScreen(latestVersion!!))
+                        val baseVersion = latestVersion!!
+                        val targetCacheDir = (context.externalCacheDir ?: context.cacheDir)
+                            .resolve(baseVersion.toVersionCode())
+                        val destFile = targetCacheDir.resolve("base-${baseVersion.toVersionCode()}.apk")
+                        if (destFile.exists() && destFile.length() > 0) {
+                            navigator.navigate(InstallerScreen(baseVersion))
+                        } else {
+                            Toast.makeText(context, "Select Chess.com base APK to begin", Toast.LENGTH_SHORT).show()
+                            filePickerLauncher.launch("application/vnd.android.package-archive")
+                        }
                     },
                     enabled = latestVersion != null && (prefs.allowDowngrade || latestVersion >= (currentVersion ?: Constants.DUMMY_VERSION)),
                     modifier = Modifier.fillMaxWidth()
