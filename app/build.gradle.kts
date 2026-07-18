@@ -10,26 +10,26 @@ plugins {
 }
 
 android {
-    namespace = "app.revenge.manager"
+    namespace = "app.gambit.manager"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "app.revenge.manager"
+        applicationId = "app.gambit.manager"
         minSdk = 28
         targetSdk = 34
         versionName = version.toString()
         versionCode = versionName!!.removePrefix("v").split("-").first().replace(".", "").toInt()
 
 
-        buildConfigField("String", "MOD_NAME", "\"Revenge\"")
-        buildConfigField("String", "MANAGER_NAME", "\"RevengeManager\"")
-        buildConfigField("String", "REPO", "\"revenge-mod/bundle\"")
-        buildConfigField("String", "ORG_LINK", "\"https://github.com/revenge-mod\"")
-        buildConfigField("String", "INVITE_LINK", "\"https://discord.gg/ddcQf3s2Uq\"")
-        buildConfigField("String", "MODDED_APP_PACKAGE_NAME", "\"app.revenge\"")
-        buildConfigField("int", "MODDED_APP_ICON", "0xFEB23A42")
-        buildConfigField("int", "MODDED_APP_ICON_ALPHA", "0xFFFBB33C")
-        buildConfigField("int", "MODDED_APP_ICON_OTHER", "0xFFD3575E")
+        buildConfigField("String", "MOD_NAME", "\"Gambit\"")
+        buildConfigField("String", "MANAGER_NAME", "\"GambitManager\"")
+        buildConfigField("String", "REPO", "\"Project-Gambit/gambit-bundle\"")
+        buildConfigField("String", "ORG_LINK", "\"https://github.com/Project-Gambit\"")
+        buildConfigField("String", "INVITE_LINK", "\"https://github.com/Project-Gambit/gambit-bundle\"")
+        buildConfigField("String", "MODDED_APP_PACKAGE_NAME", "\"com.chess\"")
+        buildConfigField("int", "MODDED_APP_ICON", "0xFF81B64C")
+        buildConfigField("int", "MODDED_APP_ICON_ALPHA", "0xFF81B64C")
+        buildConfigField("int", "MODDED_APP_ICON_OTHER", "0xFF81B64C")
 
         buildConfigField("String", "GIT_BRANCH", "\"${getCurrentBranch()}\"")
         buildConfigField("String", "GIT_COMMIT", "\"${getLatestCommit()}\"")

@@ -1,4 +1,4 @@
-rootProject.name = "revenge-manager"
+rootProject.name = "gambit-manager"
 
 pluginManagement {
     repositories {
