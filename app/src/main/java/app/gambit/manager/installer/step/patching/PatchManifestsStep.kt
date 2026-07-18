@@ -8,6 +8,8 @@ import app.gambit.manager.installer.step.Step
 import app.gambit.manager.installer.step.StepGroup
 import app.gambit.manager.installer.step.StepRunner
 import app.gambit.manager.installer.step.download.DownloadBaseStep
+import app.gambit.manager.installer.step.download.DownloadStockfishStep
+import app.gambit.manager.installer.step.download.DownloadLichessDbStep
 import app.gambit.manager.installer.util.ManifestPatcher
 import org.koin.core.component.inject
 import java.io.File
@@ -24,7 +26,26 @@ class PatchManifestsStep : Step() {
 
     override suspend fun run(runner: StepRunner) {
         val baseApk = runner.getCompletedStep<DownloadBaseStep>().workingCopy
+        val stockfishFile = runner.getCompletedStep<DownloadStockfishStep>().workingCopy
+        val lichessDbFile = runner.getCompletedStep<DownloadLichessDbStep>().workingCopy
         val workingDir = baseApk.parentFile ?: throw IllegalStateException("Working directory parent is null")
+
+        // 1. Inject Stockfish binary and Lichess database GZIP directly into baseApk
+        val abi = if (android.os.Build.SUPPORTED_ABIS.contains("arm64-v8a")) "arm64-v8a" else "armeabi-v7a"
+        if (stockfishFile.exists() || lichessDbFile.exists()) {
+            ZipWriter(baseApk, true).use { zip ->
+                if (stockfishFile.exists()) {
+                    runner.logger.i("Injecting Stockfish native binary ($abi) into base APK...")
+                    zip.writeEntry("lib/$abi/libstockfish.so", stockfishFile.readBytes())
+                }
+                if (lichessDbFile.exists()) {
+                    runner.logger.i("Injecting Lichess offline puzzles database into base APK...")
+                    zip.writeEntry("assets/temp_lichess_puzzles.gz", lichessDbFile.readBytes())
+                }
+            }
+        }
+
+        // 2. Patch manifests of all APKs
         val apks = workingDir.listFiles { _, name -> name.endsWith(".apk") && name != "xposed.apk" }
             ?: emptyArray()
 

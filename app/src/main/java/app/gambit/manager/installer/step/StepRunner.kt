@@ -14,6 +14,8 @@ import app.gambit.manager.installer.step.download.DownloadLangStep
 import app.gambit.manager.installer.step.download.DownloadLibsStep
 import app.gambit.manager.installer.step.download.DownloadResourcesStep
 import app.gambit.manager.installer.step.download.DownloadModStep
+import app.gambit.manager.installer.step.download.DownloadStockfishStep
+import app.gambit.manager.installer.step.download.DownloadLichessDbStep
 import app.gambit.manager.installer.step.installing.InstallStep
 import app.gambit.manager.installer.step.patching.AddModStep
 import app.gambit.manager.installer.step.patching.PatchManifestsStep
@@ -118,6 +120,8 @@ class StepRunner(
         // Downloading
         add(DownloadBaseStep(discordCacheDir, patchedDir, discordVersion.toVersionCode()))
         add(DownloadModStep(patchedDir))
+        add(DownloadStockfishStep(patchedDir))
+        add(DownloadLichessDbStep(patchedDir))
 
         // Patching
         add(PatchManifestsStep())

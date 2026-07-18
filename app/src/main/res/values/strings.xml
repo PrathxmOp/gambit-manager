@@ -33,6 +33,8 @@
     <string name="step_dl_lang">Downloading language apk</string>
     <string name="step_dl_res">Downloading resources apk</string>
     <string name="step_dl_mod">Downloading Gambit</string>
+    <string name="step_dl_stockfish">Downloading Stockfish engine</string>
+    <string name="step_dl_lichess_db">Downloading Lichess puzzle database</string>
 
     <string name="step_change_icon">Changing app icon</string>
     <string name="step_patch_manifests">Patching app manifests</string>
