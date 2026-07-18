@@ -23,9 +23,9 @@ android {
 
         buildConfigField("String", "MOD_NAME", "\"Gambit\"")
         buildConfigField("String", "MANAGER_NAME", "\"GambitManager\"")
-        buildConfigField("String", "REPO", "\"Project-Gambit/gambit-bundle\"")
-        buildConfigField("String", "ORG_LINK", "\"https://github.com/Project-Gambit\"")
-        buildConfigField("String", "INVITE_LINK", "\"https://github.com/Project-Gambit/gambit-bundle\"")
+        buildConfigField("String", "REPO", "\"PrathxmOp/gambit-bundle\"")
+        buildConfigField("String", "ORG_LINK", "\"https://github.com/PrathxmOp\"")
+        buildConfigField("String", "INVITE_LINK", "\"https://github.com/PrathxmOp/gambit-bundle\"")
         buildConfigField("String", "MODDED_APP_PACKAGE_NAME", "\"com.chess\"")
         buildConfigField("int", "MODDED_APP_ICON", "0xFF81B64C")
         buildConfigField("int", "MODDED_APP_ICON_ALPHA", "0xFF81B64C")

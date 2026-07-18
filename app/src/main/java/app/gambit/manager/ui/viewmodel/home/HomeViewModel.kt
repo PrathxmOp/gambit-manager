@@ -115,12 +115,12 @@ class HomeViewModel(
 
     private fun checkForUpdate() {
         screenModelScope.launch {
-            release = repo.getLatestRelease("Project-Gambit/gambit-manager").dataOrNull
+            release = repo.getLatestRelease("PrathxmOp/gambit-manager").dataOrNull
             release?.let {
                 updateDownloadUrl = it.assets.firstOrNull { asset -> asset.name.endsWith(".apk") }?.browserDownloadUrl
                 showUpdateDialog = it.tagName.removePrefix("v") != BuildConfig.VERSION_NAME
             }
-            repo.getLatestRelease("Project-Gambit/gambit-bundle").ifSuccessful {
+            repo.getLatestRelease("PrathxmOp/gambit-bundle").ifSuccessful {
                 if (prefs.moduleVersion != it.tagName) {
                     prefs.moduleVersion = it.tagName
                     val module = File(cacheDir, "xposed.apk")
